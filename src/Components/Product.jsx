@@ -23,7 +23,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () =>{
         setLoading(true)
-        const response = await fetch(`http://localhost:3004/Products/${asin}`);
+        const response = await fetch(`https://karrey-json.herokuapp.com/Products/${asin}`);
         setProduct(await response.json());
         setLoading(false);
     }
