@@ -7,6 +7,7 @@ import Product from "./Components/Product";
 import { Routes, Route,} from "react-router-dom";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
+import Cart from "./Components/Cart";
 
 function App() {
   return (
@@ -25,7 +26,11 @@ function App() {
 
         <Route  path ="/Products/:asin" element={<Product/>}/>
 
+        <Route path="/Cart" element={<Cart/>}/>
+
+
       </Routes>
+      
 
     
     </>

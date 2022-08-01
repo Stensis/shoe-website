@@ -2,16 +2,15 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-// import { Skeleton } from "react-loading-skeleton";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css';
-// import Products from "./Components/Products";
-import Products from "./Products";
+// import Products from "./Products";
 import { useDispatch } from "react-redux";
 import { addCart } from "../redux";
 
 const Product = () => {
   const { asin } = useParams();
+  console.log(asin);
   const [Product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -23,8 +22,9 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () =>{
         setLoading(true)
-        const response = await fetch(`https://karrey-json.herokuapp.com/Products/${asin}`);
-        setProduct(await response.json());
+        const response = await fetch(`https://karrey-json.herokuapp.com/Products?asin=${asin}`);
+        const res = await response.json();
+        setProduct(res[0]);
         setLoading(false);
     }
     getProduct();
@@ -58,17 +58,14 @@ const Product = () => {
         </div>
         <div className="col-md-6">
             <h4 className="text-uppercase text-black-50">
-                {Product.category}
-            </h4>
-            <h1 className="display-5">
                 {Product.title}
-            </h1>
+            </h4>
             <p className="lead fw-bolder">
-                Rating{Product.rating && Product.rating.rate}
+                Rating{Product.rating}
                 <i className="fa fa-star"></i>
             </p>
             <h3 className="display-6 fw-bold my-4">
-                ${Product.price}
+                $ {Product.price}
             </h3>
             <p className="load">{Product.url}</p>
             <button className="btn btn-outline-dark px-4 py-2" onClick={()=>addProduct(Product)}>
