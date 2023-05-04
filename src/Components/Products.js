@@ -7,26 +7,23 @@ const Products = () => {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(data);
   const [loading, setLoading] = useState(false);
-  let componentMounted = true;
+  // let componentMounted = true;
 
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      // {/* fetching data */}
-      const response = await fetch(
-        "https://fakestoreapi.com/Products"
-      );
-      if (componentMounted) {
-        setData(await response.clone().json());
-        setFilter(await response.json());
+      try {
+        const response = await fetch("https://fakestoreapi.com/Products");
+        const data = await response.json();
+        setData(data);
+        setFilter(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
         setLoading(false);
-        console.log(filter);
       }
-
-      return () => {
-        componentMounted = false;
-      };
     };
+
     getProducts();
   }, []);
 
@@ -46,23 +43,9 @@ const Products = () => {
     );
   };
 
-  const filterProduct = (cat) => {
-    const updatedList = data.filter((x) => x.category === cat);
-    setFilter(updatedList);
-  };
-
   const ShowProducts = () => {
     return (
       <>
-        <div className="buttons d-flex justify-content-center mb-5 pb-5">
-          <button
-            className="btn btn-outline-dark me-2"
-            onClick={() => setFilter(data)}
-          >
-            All
-          </button>
-        </div>
-
         {filter.map((Product, index) => (
           <>
             <div className="col-md-3 mb-4" key={index}>

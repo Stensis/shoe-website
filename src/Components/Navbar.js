@@ -14,7 +14,7 @@ function Navbar() {
       >
         <div className="container">
           <a className="navbar-brand fw-bold fs-4" href="/">
-            KARREY COLLECTION
+            Karrey Mini-Store
           </a>
           <button
             className="navbar-toggler"

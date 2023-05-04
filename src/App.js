@@ -3,11 +3,11 @@ import "./App.css";
 import Navbar from "./Components/Navbar";
 import Home from "./Components/Home";
 import Products from "./Components/Products";
-import Product from "./Components/Product";
 import { Routes, Route,} from "react-router-dom";
 import About from "./Components/About";
 import Contact from "./Components/Contact";
 import Cart from "./Components/Cart";
+import Product from "./Components/Product";
 
 function App() {
   return (
