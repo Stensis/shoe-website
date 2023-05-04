@@ -14,7 +14,7 @@ const Products = () => {
       setLoading(true);
       // {/* fetching data */}
       const response = await fetch(
-        "https://karrey-json.herokuapp.com/Products"
+        "https://fakestoreapi.com/Products"
       );
       if (componentMounted) {
         setData(await response.clone().json());
@@ -69,7 +69,7 @@ const Products = () => {
               <div className="card h-100 text-center p-4">
                 <img
                   className="card-img-top"
-                  src={Product.images_list}
+                  src={Product.image}
                   alt={Product.title}
                   height="200px"
                 />

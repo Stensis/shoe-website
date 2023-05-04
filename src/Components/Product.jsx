@@ -22,7 +22,7 @@ const Product = () => {
   useEffect(() => {
     const getProduct = async () =>{
         setLoading(true)
-        const response = await fetch(`https://karrey-json.herokuapp.com/Products?asin=${asin}`);
+        const response = await fetch(`https://fakestoreapi.com/Products?asin=${asin}`);
         const res = await response.json();
         setProduct(res[0]);
         setLoading(false);
@@ -52,7 +52,7 @@ const Product = () => {
     return (
         <>
         <div className="col-md-6">
-            <img src={Product.images_list} alt={Product.title} 
+            <img src={Product.images} alt={Product.title} 
             height="400px"
             width= "400px"/>
         </div>
