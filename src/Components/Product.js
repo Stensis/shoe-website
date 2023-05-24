@@ -1,29 +1,22 @@
-import React from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useDispatch } from "react-redux";
-import { addCart } from "../redux";
+
+const CartContext = createContext([]);
 
 const Product = () => {
-  const { asin } = useParams();
-  const [Product, setProduct] = useState({});
+  const { id } = useParams();
+  const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
-  const addProduct = (Product) => {
-    dispatch(addCart(Product));
-  };
+  const cart = useContext(CartContext);
 
   useEffect(() => {
     const getProduct = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://fakestoreapi.com/products/${asin}`
-        );
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
         if (response.status !== 200) {
           throw new Error(`Failed to fetch product: ${response.statusText}`);
         }
@@ -36,7 +29,7 @@ const Product = () => {
       }
     };
     getProduct();
-  }, [asin]);
+  }, [id]);
 
   const Loading = () => {
     return (
@@ -57,73 +50,24 @@ const Product = () => {
     );
   };
 
-  // const ShowProduct = () => {
-  //   if (!Product) {
-  //     return <div>Product not found</div>;
-  //   } else {
-  //     return (
-  //       <>
-  //         <div className="col-md-6">
-  //           {Product.image && (
-  //             <img
-  //               src={Product.image}
-  //               alt={Product.title}
-  //               height="400px"
-  //               width="400px"
-  //             />
-  //           )}
-  //         </div>
-  //         <div className="col-md-6">
-  //           <h4 className="text-uppercase text-black-50">{Product.title}</h4>
-  //           <p className="lead fw-bolder">
-  //             Rating {Product.rating}
-  //             <i className="fa fa-star"></i>
-  //           </p>
-  //           <h3 className="display-6 fw-bold my-4">$ {Product.price}</h3>
-  //           <p className="load">{Product.url}</p>
-  //           <button
-  //             className="btn btn-outline-dark px-4 py-2"
-  //             onClick={() => addProduct(Product)}
-  //           >
-  //             Add to Cart
-  //           </button>
-  //           <NavLink to="/cart" className="btn btn-outline-dark ms-2 px-3 py-2">
-  //             Go to Cart
-  //           </NavLink>
-  //         </div>
-  //       </>
-  //     );
-  //   }
-  // };
-
   const ShowProduct = () => {
-    if (!Product) {
+    if (!product) {
       return <div>Product not found</div>;
     } else {
       return (
         <>
           <div className="col-md-6">
-            {Product.image && (
-              <img
-                src={Product.image}
-                alt={Product.title}
-                height="400px"
-                width="400px"
-              />
+            {product.image && (
+              <img src={product.image} alt={product.title} height="400px" width="400px" />
             )}
           </div>
           <div className="col-md-6">
-            <h4 className="text-uppercase text-black-50">{Product.title}</h4>
-            <p>{Product.description}</p>
-            <h3 className="display-6 fw-bold my-4"> Ksh: {Product.price}</h3>
-            <p className="lead fw-bolder">
-              <i className="fa fa-star"></i>
-              Rating: {Product.rate} <br /> {Product.count}
-            </p>
-           
+            <h4 className="text-uppercase text-black-50">{product.title}</h4>
+            <p>{product.description}</p>
+            <h3 className="display-6 fw-bold my-4"> Ksh: {product.price}</h3>
             <button
               className="btn btn-outline-dark px-4 py-2"
-              onClick={() => addProduct(Product)}
+              onClick={() => cart.dispatch({ type: "ADD_TO_CART", payload: product })}
             >
               Add to Cart
             </button>
@@ -137,13 +81,13 @@ const Product = () => {
   };
 
   return (
-    <div>
-      <div className="container py-5">
-        <div className="row py-3">
-          {loading ? <Loading /> : <ShowProduct />}
+    <CartContext.Provider value={cart}>
+      <div>
+        <div className="container py-5">
+          <div className="row py-3">{loading ? <Loading /> : <ShowProduct />}</div>
         </div>
       </div>
-    </div>
+    </CartContext.Provider>
   );
 };
 

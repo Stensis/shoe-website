@@ -7,14 +7,19 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './redux/Store';
+
+// Create a new context
+const MyContext = React.createContext('default value');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-  <Provider store={store}>
-    <App />
-  </Provider>
+    {/* Provide the context value */}
+    <MyContext.Provider value="context value">
+      <Provider>
+        <App />
+      </Provider>
+    </MyContext.Provider>
   </BrowserRouter>
 );
 
